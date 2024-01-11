@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: build-Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+       APPLICATION_PORT: "8080"
+       POSTGRES_HOST: "db"
+       POSTGRES_PORT: "5432"
+       POSTGRES_USER: "postgres"
+       POSTGRES_PASSWORD: "pass"
+       POSTGRES_DB_NAME: "postgres"
+       POSTGRES_SSLMODE: "disable"
+    depends_on:
+      - db
+      
+## creating DB Instance on the same Image is not recomended as it will clear every data if this service got restarted or turned off
+
+  db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5432:5432"

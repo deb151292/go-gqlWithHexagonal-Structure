@@ -1,0 +1,23 @@
+# Use the official Golang image as the base image
+FROM golang:latest
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the go.mod and go.sum files to the container
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy the entire project to the container
+COPY . .
+
+# Build the application
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /go/bin/app ./cmd
+
+# Expose the port on which the application will run
+EXPOSE 8080
+
+# Set the entry point for the container
+CMD ["/go/bin/app"]

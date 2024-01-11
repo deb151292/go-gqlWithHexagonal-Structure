@@ -1,0 +1,5 @@
+# graph/schema.graphqls
+
+type Query {
+  add(a: Int!, b: Int!): Int!
+}
